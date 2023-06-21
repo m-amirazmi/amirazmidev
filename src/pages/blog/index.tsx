@@ -1,3 +1,4 @@
+import { icons } from "@/components/icons";
 import blogPages from "@/data/blogpages.json";
 import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
@@ -21,6 +22,7 @@ export default function BlogListPage() {
           })
           .map((i) => {
             const link = "/blog/" + i.page;
+            const Icon = icons[i.tag];
             return (
               <Link
                 href={link}
@@ -28,13 +30,16 @@ export default function BlogListPage() {
                 className="w-full p-3 md:w-6/12 lg:w-4/12"
               >
                 <div className="flex flex-col gap-2 rounded-2xl border border-zinc-900 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-1">
-                  <Image
-                    src={i.thumbnail}
-                    alt={i.page}
-                    width={800}
-                    height={450}
-                    className="mb-4 rounded-2xl"
-                  />
+                  {i.tag && (
+                    <div className="relative mb-2 h-48 w-full overflow-hidden rounded-2xl bg-zinc-900">
+                      <p className="m-4 text-sm uppercase tracking-wider text-amber-50">
+                        {i.tag}
+                      </p>
+                      <div className="absolute bottom-0 right-0 h-40 w-40 translate-x-[25%] translate-y-[25%]">
+                        <Icon />
+                      </div>
+                    </div>
+                  )}
                   <h2 className="text-xl font-semibold">{i.title}</h2>
                   <p className="line-clamp-3">{i.summary}</p>
                 </div>
