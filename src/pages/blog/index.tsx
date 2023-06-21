@@ -1,5 +1,4 @@
 import { icons } from "@/components/icons";
-import { LOCALAPI } from "@/utils/configs";
 import { Post } from "@/utils/types";
 import { GetStaticProps } from "next";
 import Link from "next/link";
@@ -52,8 +51,6 @@ export default function BlogListPage({ posts }: { posts: Post[] }) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const data: Post[] = await fetch(LOCALAPI + "/data/blogpages.json").then(
-    (r) => r.json()
-  );
+  const data: Post[] = require("@/data/blogpages.json");
   return { props: { posts: data } };
 };

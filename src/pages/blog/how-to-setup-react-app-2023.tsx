@@ -1,4 +1,3 @@
-import { LOCALAPI } from "@/utils/configs";
 import { formatDate } from "@/utils/formatDate";
 import { Post } from "@/utils/types";
 import { GetStaticProps } from "next";
@@ -26,9 +25,7 @@ export default function HowToSetupReactApp2023Page({ post }: { post: Post }) {
 }
 
 export const getStaticProps: GetStaticProps = async ({}) => {
-  const data: Post[] = await fetch(LOCALAPI + "/data/blogpages.json").then(
-    (r) => r.json()
-  );
+  const data: Post[] = require("@/data/blogpages.json");
   const post = data.find((i) => i.page === "how-to-setup-react-app-2023");
   return { props: { post } };
 };
