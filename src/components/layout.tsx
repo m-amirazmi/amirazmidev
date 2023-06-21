@@ -14,7 +14,7 @@ export default function Layout({ children }: Props) {
       <Head>
         <title>Amir Azmi | Welcome</title>
       </Head>
-      <main className={`${font.className} min-h-screen bg-amber-50/50`}>
+      <main className={`${font.className} min-h-screen bg-amber-50/20`}>
         <div className="mx-auto max-w-6xl p-6">
           {pathname !== "/" && <Navbar />}
           {children}
