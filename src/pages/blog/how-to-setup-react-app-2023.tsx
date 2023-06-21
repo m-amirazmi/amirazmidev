@@ -1,13 +1,34 @@
-import PageContainer from "@/components/page-container";
+import { LOCALAPI } from "@/utils/configs";
+import { formatDate } from "@/utils/formatDate";
+import { Post } from "@/utils/types";
+import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
 
 // PAGE: how-to-setup-react-app-2023
-export default function HowToSetupReactApp2023Page() {
+export default function HowToSetupReactApp2023Page({ post }: { post: Post }) {
+  const { day, month, minutes, hour, year } = formatDate(+post.created_at);
+  const today = new Date();
+
+  const postedOnString = `${day} ${month} ${
+    +today.getFullYear() !== year ? year : ""
+  }`;
+
   return (
-    <PageContainer>
-      <h1 className="text-3xl font-bold">How To Setup React App 2023?</h1>
+    <article className="my-8">
+      <h1 className="mb-1 text-3xl font-bold">{post.title}</h1>
       <div>
-        <span>Posted On </span>
+        <span className="text-sm text-zinc-700">
+          Posted On {postedOnString} | {hour}:{minutes}
+        </span>
       </div>
-    </PageContainer>
+    </article>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({}) => {
+  const data: Post[] = await fetch(LOCALAPI + "/data/blogpages.json").then(
+    (r) => r.json()
+  );
+  const post = data.find((i) => i.page === "how-to-setup-react-app-2023");
+  return { props: { post } };
+};

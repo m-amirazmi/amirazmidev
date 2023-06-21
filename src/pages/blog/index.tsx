@@ -1,21 +1,20 @@
 import { icons } from "@/components/icons";
-import PageContainer from "@/components/page-container";
-import blogPages from "@/data/blogpages.json";
-import { formatDate } from "@/utils/formatDate";
-import Image from "next/image";
+import { LOCALAPI } from "@/utils/configs";
+import { Post } from "@/utils/types";
+import { GetStaticProps } from "next";
 import Link from "next/link";
 
-export default function BlogListPage() {
+export default function BlogListPage({ posts }: { posts: Post[] }) {
   return (
-    <PageContainer>
+    <div className="my-8 flex flex-col gap-4 text-zinc-700">
       <div className="-mb-3 flex items-center justify-between">
         <h1 className="text-lg uppercase tracking-widest">Blog</h1>
         <span className="text-zinc-900/70">
-          {blogPages.length} article{blogPages.length > 1 ? "s" : ""} found
+          {posts.length} article{posts.length > 1 ? "s" : ""} found
         </span>
       </div>
       <div className="-mx-3 flex flex-row flex-wrap">
-        {blogPages
+        {posts
           .sort((a, b) => {
             if (parseInt(a.created_at) < parseInt(b.created_at)) return -1;
             if (parseInt(a.created_at) > parseInt(b.created_at)) return 1;
@@ -48,6 +47,13 @@ export default function BlogListPage() {
             );
           })}
       </div>
-    </PageContainer>
+    </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const data: Post[] = await fetch(LOCALAPI + "/data/blogpages.json").then(
+    (r) => r.json()
+  );
+  return { props: { posts: data } };
+};
